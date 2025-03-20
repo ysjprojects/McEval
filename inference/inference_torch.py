@@ -424,6 +424,7 @@ def main(rank, args):
         init_method='env://'
     )
     base_model = args.base_model
+    peft_model = args.peft_model
     data_path = args.data_path
     batch_size = args.batch_size
 
@@ -436,6 +437,11 @@ def main(rank, args):
         torch_dtype="auto",
         trust_remote_code=True
     )
+
+    if peft_model is not None:
+        from peft import PeftModel
+        model = PeftModel.from_pretrained(model, peft_model, torch_dtype="auto")
+        model = model.merge_and_unload()
 
     if tokenizer.pad_token is None:
         smart_tokenizer_and_embedding_resize(
@@ -522,8 +528,9 @@ def main(rank, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Parameters')
     parser.add_argument("--chatml-format", default="code-llama", type=str, help="model path")
-    parser.add_argument("--model_name", default="deepseek-coder-7B", type=str, help="model path")
-    parser.add_argument("--base_model", default="", type=str, help="model path")
+    parser.add_argument("--model_name", default="qwen2.5-coder-8b-instruct", type=str, help="model path")
+    parser.add_argument("--base_model", required=True, type=str, help="base model path")
+    parser.add_argument("--peft_model", default=None, type=str, help="peft model path")
     parser.add_argument("--data_path", default="", type=str, help="config path")
     parser.add_argument("--temperature", default=1.0, type=str, help="config path")
     parser.add_argument("--batch_size", type=int, default=1, help="batch size")

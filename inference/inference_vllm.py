@@ -206,7 +206,38 @@ def run(args):
     sampling_params = vllm.SamplingParams(temperature=0.0, top_p=0.95, max_tokens=args.max_length)
 
     print("model:", args.base_model)
-    model = vllm.LLM(model=args.base_model, tensor_parallel_size=8, trust_remote_code=True)
+
+    if args.peft_model is not None:
+        import tempfile
+        from peft import PeftModel
+        
+        print(f"Loading base model: {args.base_model}")
+        base_model = AutoModelForCausalLM.from_pretrained(
+            args.base_model,
+            torch_dtype="auto",  # Specify dtype explicitly
+            trust_remote_code=True
+        )
+        
+        print(f"Applying PEFT adapter: {args.peft_model}")
+        model = PeftModel.from_pretrained(base_model, args.peft_model, torch_dtype="auto")
+        
+        print("Merging weights...")
+        model = model.merge_and_unload()
+        
+        # Create a temporary directory to save the merged model
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            print(f"Saving merged model to {tmp_dir}")
+            model.save_pretrained(tmp_dir)
+            
+            # Also save the tokenizer
+            tokenizer = AutoTokenizer.from_pretrained(args.base_model, torch_dtype="auto")
+            tokenizer.save_pretrained(tmp_dir)
+            
+            # Load the merged model with vLLM
+            print(f"Loading merged model with vLLM")
+            model = vllm.LLM(model=tmp_dir, tensor_parallel_size=8, trust_remote_code=True)
+    else:
+        model = vllm.LLM(model=args.base_model, tensor_parallel_size=8, trust_remote_code=True)
 
     outputs = model.generate(prompts, sampling_params)
 
@@ -231,6 +262,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Parameters')
 
     parser.add_argument("--base_model", default="", type=str, help="model path")
+    parser.add_argument("--peft_model", default=None, type=str, help="peft model path")
     parser.add_argument("--data_path", default="", type=str, help="config path")
     parser.add_argument("--temperature", default=1.0, type=str, help="config path")
     parser.add_argument("--task", default="complete", type=str, help="config path")
