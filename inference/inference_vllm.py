@@ -235,9 +235,9 @@ def run(args):
             
             # Load the merged model with vLLM
             print(f"Loading merged model with vLLM")
-            model = vllm.LLM(model=tmp_dir, tensor_parallel_size=8, trust_remote_code=True)
+            model = vllm.LLM(model=tmp_dir, tensor_parallel_size=4, trust_remote_code=True)
     else:
-        model = vllm.LLM(model=args.base_model, tensor_parallel_size=8, trust_remote_code=True)
+        model = vllm.LLM(model=args.base_model, tensor_parallel_size=4, trust_remote_code=True)
 
     outputs = model.generate(prompts, sampling_params)
 
