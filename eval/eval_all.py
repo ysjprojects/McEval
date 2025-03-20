@@ -152,8 +152,8 @@ def eval(args):
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('--result_path', type=str, default='/workspace/MMCodeEval/result/process_result_0313/split_result/outputs_fim_light/deepseek-coder-7b-instruct')
-    arg_parser.add_argument('--save_path', type=str, default='/workspace/MMCodeEval/result/process_result_0313/fim_light')
+    arg_parser.add_argument('--result_path', type=str, default=os.environ.get("DEFAULT_RESULT_PATH", "/workspace/MMCodeEval/result/process_result_0313/split_result/outputs_fim_light/deepseek-coder-7b-instruct"))
+    arg_parser.add_argument('--save_path', type=str, default=os.environ.get("DEFAULT_OUT_PATH", "/workspace/MMCodeEval/result/process_result_0313/fim_light"))
     args = arg_parser.parse_args()
     eval(args)
     
