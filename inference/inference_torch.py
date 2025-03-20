@@ -26,6 +26,9 @@ from transformers import (
     BeamSearchScorer,
 )
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from transformers import GenerationConfig
 logging.basicConfig(level=logging.DEBUG)  
 IGNORE_INDEX = -100
@@ -531,14 +534,14 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", default="Qwen/Qwen2.5-Coder-7B-Instruct", type=str, help="model path")
     parser.add_argument("--base_model", required=True, type=str, help="base model path")
     parser.add_argument("--peft_model", default=None, type=str, help="peft model path")
-    parser.add_argument("--data_path", default=os.environ.get("DEFAULT_DATA_PATH"), type=str, help="config path")
+    parser.add_argument("--data_path", default=os.environ.get("DEFAULT_DATA_PATH", "../data"), type=str, help="config path")
     parser.add_argument("--temperature", default=1.0, type=str, help="config path")
     parser.add_argument("--batch_size", type=int, default=1, help="batch size")
     parser.add_argument("--port", type=int, default=0, help="batch size")
     parser.add_argument("--beam_size", type=int, default=1, help="beam size")
     parser.add_argument("--diverse_beam", type=int, default=1, help="batch size")
     parser.add_argument("--use_diverse_beam", type=bool, default=False, help="batch size")
-    parser.add_argument("--out_path", default=os.environ.get("DEFAULT_OUT_PATH"), type=str, help="config path")
+    parser.add_argument("--out_path", default=os.environ.get("DEFAULT_OUT_PATH", "../generation"), type=str, help="config path")
     parser.add_argument("--do_sample", default=False, type=bool, help="config path")
     parser.add_argument("--model_type", default="cmt", type=str, help="config path")
     parser.add_argument("--model_max_length", type=int, default=8192, help="beam size")
