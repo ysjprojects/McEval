@@ -113,11 +113,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspace/MMCodeEval/data/F#/MyFsharpApp/MyFsharpApp.fsproj",
+      "projectUniqueName": "/ephemeral/tplx-dojo-evals/mceval_cache/data/F#/MyFsharpApp/MyFsharpApp.fsproj",
       "projectName": "MyFsharpApp",
-      "projectPath": "/workspace/MMCodeEval/data/F#/MyFsharpApp/MyFsharpApp.fsproj",
+      "projectPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/F#/MyFsharpApp/MyFsharpApp.fsproj",
       "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/workspace/MMCodeEval/data/F#/MyFsharpApp/obj/",
+      "outputPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/F#/MyFsharpApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/root/.nuget/NuGet/NuGet.Config"

@@ -6,9 +6,9 @@ import glob
 
 
 def valid_label():
-    data_path ='/workspace/MMCodeEval/data'
-    beam_path = '/workspace/MMCodeEval/eval'
-    tmp_path = '/workspace/MMCodeEval/tmp'
+    data_path ='/ephemeral/tplx-dojo-evals/mceval_cache/data'
+    beam_path = '/ephemeral/tplx-dojo-evals/mceval_cache/eval'
+    tmp_path = '/ephemeral/tplx-dojo-evals/mceval_cache/tmp'
     langs = ['Haskell', 'CPP', 'HTML', 'rust', 'coffeescript', 'Racket', 'PowerShell', 'Swift', 'VimScript', 'groovy', 'TypeScript', 'SQL', 'Emacs Lisp', 'fortran', 'kotlin', 'Shell', 'JSON', 'Pascal', 'ruby', 'F#', 'R', 'Elixir', 'C#', 'Lua', 'dart', 'Visual Basic', 'JAVA', 'Tcl', 'Erlang', 'Common Lisp', 'scala', 'C', 'Markdown', 'Python', 'Perl', 'php', 'Scheme', 'AWK', 'JavaScript', 'Go', 'julia']
     # langs = ['C#']
     

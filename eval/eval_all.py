@@ -13,16 +13,16 @@ import shutil
 import random 
 
 def prepare_tempdir_context(temp_dir):
-    shutil.copytree('../data/AWK', os.path.join(temp_dir, 'data/AWK'),dirs_exist_ok=True)
-    shutil.copytree('../data/C#', os.path.join(temp_dir, 'C#'),dirs_exist_ok=True)
-    shutil.copytree('../data/Common Lisp', os.path.join(temp_dir, 'Common Lisp'),dirs_exist_ok=True)
-    shutil.copytree('../data/F#', os.path.join(temp_dir, 'F#'),dirs_exist_ok=True)
-    shutil.copytree('../data/rust', os.path.join(temp_dir, 'rust'),dirs_exist_ok=True)
-    shutil.copytree('../data/go', os.path.join(temp_dir, 'go'),dirs_exist_ok=True)
-    shutil.copytree('../data/HTML', os.path.join(temp_dir, 'HTML'),dirs_exist_ok=True)
-    shutil.copytree('../data/JSON', os.path.join(temp_dir, 'JSON'),dirs_exist_ok=True)
-    shutil.copytree('../data/Markdown', os.path.join(temp_dir, 'Markdown'),dirs_exist_ok=True)
-    shutil.copytree('../data/Visual Basic', os.path.join(temp_dir, 'Visual Basic'),dirs_exist_ok=True)
+    #shutil.copytree('./data/AWK', os.path.join(temp_dir, 'data/AWK'),dirs_exist_ok=True)
+    #shutil.copytree('./data/C#', os.path.join(temp_dir, 'C#'),dirs_exist_ok=True)
+    #shutil.copytree('./data/Common Lisp', os.path.join(temp_dir, 'Common Lisp'),dirs_exist_ok=True)
+    #shutil.copytree('./data/F#', os.path.join(temp_dir, 'F#'),dirs_exist_ok=True)
+    shutil.copytree('./data/rust', os.path.join(temp_dir, 'rust'),dirs_exist_ok=True)
+    shutil.copytree('./data/go', os.path.join(temp_dir, 'go'),dirs_exist_ok=True)
+    shutil.copytree('./data/HTML', os.path.join(temp_dir, 'HTML'),dirs_exist_ok=True)
+    shutil.copytree('./data/JSON', os.path.join(temp_dir, 'JSON'),dirs_exist_ok=True)
+    #shutil.copytree('./data/Markdown', os.path.join(temp_dir, 'Markdown'),dirs_exist_ok=True)
+    #shutil.copytree('./data/Visual Basic', os.path.join(temp_dir, 'Visual Basic'),dirs_exist_ok=True)
     
 def calculate_accuracy(args, lang, temp_dir):
     items = [json.loads(x) for x in open(f"{args.result_path}/{lang}.jsonl").readlines() if x]
@@ -34,8 +34,6 @@ def calculate_accuracy(args, lang, temp_dir):
     detail_scores = []  
 
     for item in items:
-        if lang == 'AWK':
-            get_awk_ans(item, temp_dir)
         try:
             code = extract(item["raw_generation"][0], item, lang)
         except:
@@ -80,7 +78,7 @@ def calculate_accuracy(args, lang, temp_dir):
 
 
 def clean_cache():
-    beam_path = '/workspace/MMCodeEval/eval'
+    beam_path = '/ephemeral/tplx-dojo-evals/mceval_cache/eval'
     files_to_delete = glob.glob(os.path.join(beam_path, '*' + "beam"))
     for file_path in files_to_delete:
         try:
@@ -88,7 +86,7 @@ def clean_cache():
         except OSError as e:
             print(f"Error: {e.filename} - {e.strerror}.")
 
-    go_cache_path ='/workspace/MMCodeEval/data/go'
+    go_cache_path ='/ephemeral/tplx-dojo-evals/mceval_cache/data/go'
     files_to_delete = glob.glob(os.path.join(go_cache_path, '*' + ".go"))
     for file_path in files_to_delete:
         try:
@@ -96,7 +94,7 @@ def clean_cache():
         except OSError as e:
             print(f"Error: {e.filename} - {e.strerror}.")
 
-    tmp_cache_path ='/workspace/MMCodeEval/eval/tmp'
+    tmp_cache_path ='/ephemeral/tplx-dojo-evals/mceval_cache/eval/tmp'
     files_to_delete = glob.glob(os.path.join(tmp_cache_path, '*'))
     for file_path in files_to_delete:
         try:
@@ -106,10 +104,9 @@ def clean_cache():
 
 def eval(args):
     clean_cache()
-    exclude_langs = ['sql']
-
+    include_langs = ["TypeScript", "Python", "JavaScript", "Java", "HTML", "C", "CPP", "JSON"]
     langs = [x.split('.')[0] for x in os.listdir(args.result_path) if x.endswith('.jsonl')]
-    save_path = os.path.join(args.save_path, os.path.basename(args.result_path)+'.jsonl')
+    save_path = os.path.join(args.save_path, 'result.jsonl')
     detail_save_path = os.path.join(args.save_path, os.path.basename(args.result_path)+'_detail.jsonl')
     # print(save_path)
     if os.path.exists(save_path):
@@ -117,14 +114,15 @@ def eval(args):
     else:
         finish_langs = []
   
-    langs = [lang for lang in langs if (lang.lower() not in exclude_langs+finish_langs)]
+    langs = [lang for lang in langs if (lang in include_langs+finish_langs)]
+    print(langs)
     random.shuffle(langs)
 
     print(langs)
     score = {}
     
     # with tempfile.TemporaryDirectory() as temp_dir:
-    temp_dir = '/workspace/MMCodeEval/eval/tmp'
+    temp_dir = '/ephemeral/tplx-dojo-evals/mceval_cache/eval/tmp'
     prepare_tempdir_context(temp_dir)
     # orgin_dir = os.getcwd()
     os.chdir(temp_dir)
@@ -152,8 +150,8 @@ def eval(args):
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument('--result_path', type=str, default=os.environ.get("DEFAULT_RESULT_PATH", "/workspace/MMCodeEval/result/process_result_0313/split_result/outputs_fim_light/deepseek-coder-7b-instruct"))
-    arg_parser.add_argument('--save_path', type=str, default=os.environ.get("DEFAULT_OUT_PATH", "/workspace/MMCodeEval/result/process_result_0313/fim_light"))
+    arg_parser.add_argument('--result_path', type=str, default=os.environ.get("DEFAULT_RESULT_PATH", "/ephemeral/tplx-dojo-evals/evals/experiment_1/mceval/sft_openhermes2-5_no_coding_39552_coder/data"))
+    arg_parser.add_argument('--save_path', type=str, default=os.environ.get("DEFAULT_OUT_PATH", "/ephemeral/tplx-dojo-evals/evals/experiment_1/mceval/sft_openhermes2-5_no_coding_39552_coder"))
     args = arg_parser.parse_args()
     eval(args)
     

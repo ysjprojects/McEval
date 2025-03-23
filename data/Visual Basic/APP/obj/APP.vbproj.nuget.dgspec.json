@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/workspace/MMCodeEval/data/Visual Basic/APP/APP.vbproj": {}
+    "/ephemeral/tplx-dojo-evals/mceval_cache/data/Visual Basic/APP/APP.vbproj": {}
   },
   "projects": {
-    "/workspace/MMCodeEval/data/Visual Basic/APP/APP.vbproj": {
+    "/ephemeral/tplx-dojo-evals/mceval_cache/data/Visual Basic/APP/APP.vbproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspace/MMCodeEval/data/Visual Basic/APP/APP.vbproj",
+        "projectUniqueName": "/ephemeral/tplx-dojo-evals/mceval_cache/data/Visual Basic/APP/APP.vbproj",
         "projectName": "APP",
-        "projectPath": "/workspace/MMCodeEval/data/Visual Basic/APP/APP.vbproj",
+        "projectPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/Visual Basic/APP/APP.vbproj",
         "packagesPath": "/root/.nuget/packages/",
-        "outputPath": "/workspace/MMCodeEval/data/Visual Basic/APP/obj/",
+        "outputPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/Visual Basic/APP/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/root/.nuget/NuGet/NuGet.Config"

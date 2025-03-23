@@ -6,7 +6,7 @@ import json
 if __name__ == '__main__':
     save_dir = '/workspace/explain_data'
     # files = os.listdir('./data')
-    data_dir = '/workspace/MMCodeEval/data'
+    data_dir = '/ephemeral/tplx-dojo-evals/mceval_cache/data'
     files = os.listdir(data_dir)
     files = [x for x in files if x.endswith('.jsonl')]
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
             elif 'canonical_solution' not in item: # html, markdown, json
                 code_name, task_id = item['task_id'].split('/')
-                code_file = f'/workspace/MMCodeEval/data/{code_name}/'+task_id+'.'+file_fix[code_name]
+                code_file = f'/ephemeral/tplx-dojo-evals/mceval_cache/data/{code_name}/'+task_id+'.'+file_fix[code_name]
                 with open(code_file) as tf:
                     tlines = tf.readlines()
                     tlines = [l for l in tlines if len(l.strip())]

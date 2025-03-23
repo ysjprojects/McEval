@@ -303,6 +303,8 @@ def excute(language_type, path, task_id, temp_dir)->bool:
                 return False
 
             # 使用prettify()方法将解析后的HTML转换为字符串，然后比较字符串
+            print("HTML1",html1)
+            print("HTML2",html2)
             return html1.prettify().strip() == html2.prettify().strip()
 
         try:

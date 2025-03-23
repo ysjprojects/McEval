@@ -18,6 +18,8 @@ import transformers
 import torch.distributed as dist
 from torch.utils.data import Dataset, DataLoader
 from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.nn.parallel import DataParallel as DP
+
 from transformers import (
     AutoTokenizer,
     AutoModelForSeq2SeqLM,
@@ -306,6 +308,7 @@ Please continue to complete the function and return all completed code in a code
     #     f.write(item['humaneval_instruction']+'\n\n')
     # f.close()
 
+include_langs = ["TypeScript", "Python", "JavaScript", "Java", "HTML", "C", "CPP", "JSON"]
 
 class SupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
@@ -313,6 +316,7 @@ class SupervisedDataset(Dataset):
         super(SupervisedDataset, self).__init__()
         logging.warning("Loading data...")
         filenames = [x for x in os.listdir(data_path) if x.endswith('.jsonl')]
+        filenames = [x for x in filenames if x.split('.')[0] in include_langs]
         print(filenames)
         list_data_dict = []
         
@@ -456,7 +460,6 @@ def main(rank, args):
     tokenizer.truncation_side = 'right'
     torch.cuda.set_device(LOCAL_RANK)
     model.to(LOCAL_RANK)
-    model = DDP(model, device_ids=[LOCAL_RANK])
     model.eval()
 
     data_collator = DataCollatorForInference(tokenizer=tokenizer)
@@ -485,7 +488,7 @@ def main(rank, args):
     for step, batch in tqdm(enumerate(dataloader), total=len(dataloader)):
         input_ids = batch['input_ids'].to(model.device)
         attention_mask = batch['attention_mask'].to(model.device)
-        generation_output = model.module.generate(
+        generation_output = model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
             generation_config=generation_config,
@@ -534,7 +537,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", default="Qwen/Qwen2.5-Coder-7B-Instruct", type=str, help="model path")
     parser.add_argument("--base_model", required=True, type=str, help="base model path")
     parser.add_argument("--peft_model", default=None, type=str, help="peft model path")
-    parser.add_argument("--data_path", default=os.environ.get("DEFAULT_DATA_PATH", "../../data"), type=str, help="config path")
+    parser.add_argument("--data_path", default=os.environ.get("DEFAULT_DATA_PATH", "./data"), type=str, help="config path")
     parser.add_argument("--temperature", default=1.0, type=str, help="config path")
     parser.add_argument("--batch_size", type=int, default=1, help="batch size")
     parser.add_argument("--port", type=int, default=0, help="batch size")

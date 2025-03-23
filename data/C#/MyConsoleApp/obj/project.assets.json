@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/workspace/MMCodeEval/data/C#/MyConsoleApp/MyConsoleApp.csproj",
+      "projectUniqueName": "/ephemeral/tplx-dojo-evals/mceval_cache/data/C#/MyConsoleApp/MyConsoleApp.csproj",
       "projectName": "MyConsoleApp",
-      "projectPath": "/workspace/MMCodeEval/data/C#/MyConsoleApp/MyConsoleApp.csproj",
+      "projectPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/C#/MyConsoleApp/MyConsoleApp.csproj",
       "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/workspace/MMCodeEval/data/C#/MyConsoleApp/obj/",
+      "outputPath": "/ephemeral/tplx-dojo-evals/mceval_cache/data/C#/MyConsoleApp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/root/.nuget/NuGet/NuGet.Config"
